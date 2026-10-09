@@ -1,0 +1,5 @@
+.env
+node_modules/
+Acces.json
+data/visterie.json
+npm-debug.log*
