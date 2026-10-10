@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/[...path].mjs": {
+      "includeFiles": "public/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/auth/discord",

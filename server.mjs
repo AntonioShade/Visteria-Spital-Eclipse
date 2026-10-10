@@ -329,6 +329,8 @@ export async function handler(request, response) {
   }
 }
 
+export default handler;
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET || !process.env.DISCORD_REDIRECT_URI) {
     console.warn("Configurează variabilele DISCORD_* pentru a activa autentificarea Discord.");
