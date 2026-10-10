@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { readFile, writeFile, rename, copyFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, rename, copyFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, extname, resolve, sep } from "node:path";
@@ -8,9 +8,11 @@ import { createAccessEntry, parseAmountToCents } from "./lib/access.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const publicRoot = resolve(root, "public");
-const accessPath = resolve(root, "Acces.json");
+const dataDirectory = resolve(process.env.DATA_DIR || root);
+const accessPath = resolve(dataDirectory, "Acces.json");
 const accessTemplatePath = resolve(root, "Acces.example.json");
-const ledgerPath = resolve(root, "data", "visterie.json");
+const ledgerDirectory = process.env.DATA_DIR ? dataDirectory : resolve(root, "data");
+const ledgerPath = resolve(ledgerDirectory, "visterie.json");
 const ledgerTemplatePath = resolve(root, "data", "visterie.example.json");
 const sessions = new Map();
 const oauthStates = new Map();
@@ -372,6 +374,7 @@ async function serveStatic(response, pathname) {
   response.end(await readFile(filePath));
 }
 
+await mkdir(dataDirectory, { recursive: true });
 if (!existsSync(accessPath)) await copyFile(accessTemplatePath, accessPath);
 if (!existsSync(ledgerPath)) await copyFile(ledgerTemplatePath, ledgerPath);
 

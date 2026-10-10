@@ -15,6 +15,12 @@ Ai nevoie de Node.js 20.6 sau mai nou. Nu sunt necesare pachete externe.
 
 Pentru utilizare publică, publică aplicația numai în spatele HTTPS și setează `NODE_ENV=production`; aceasta activează cookie-ul `Secure`. Păstrează `.env`, `Acces.json` și `data/visterie.json` în afara controlului versiunilor și limitează accesul la server și la copiile de siguranță. Repornește serverul după modificarea ID-urilor administratorilor din `.env`.
 
+## Publicare pe Render
+
+Aplicația folosește un server Node.js persistent, sesiuni în memoria procesului și fișiere JSON. Nu o publica pe Vercel fără migrarea sesiunilor și a datelor la servicii externe. Pentru Render, folosește blueprint-ul `render.yaml`; acesta configurează un serviciu web Node cu disc persistent montat în `/var/data`. Planul serviciului trebuie să permită discuri persistente.
+
+După crearea serviciului, completează variabilele `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_ADMIN_IDS` și `DISCORD_REDIRECT_URI` în setările Render. Valoarea pentru `DISCORD_REDIRECT_URI` trebuie să fie URL-ul serviciului urmat de `/auth/discord/callback`, de exemplu `https://numele-serviciului.onrender.com/auth/discord/callback`. Adaugă același URL în Discord Developer Portal, la OAuth2 Redirects. `Acces.json` și `visterie.json` se creează pe discul persistent la prima pornire; nu încărca fișierele de date locale în repository.
+
 ## Teste
 
 Rulează `npm test` pentru testele de validare a sumelor și a datelor membrilor.

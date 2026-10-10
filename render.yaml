@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: visterie-spital-eclipse
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: node server.mjs
+    disk:
+      name: visterie-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+      - key: DISCORD_REDIRECT_URI
+        sync: false
+      - key: DISCORD_ADMIN_IDS
+        sync: false
