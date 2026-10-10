@@ -6,7 +6,7 @@ Aplicație web privată pentru evidența sumelor depuse și retrase. Autentifica
 
 ## Pornire locală
 
-Ai nevoie de Node.js 20.6 sau mai nou. Nu sunt necesare pachete externe.
+Ai nevoie de Node.js 20.6 sau mai nou. Dependențele sunt instalate cu `npm install`.
 
 1. Copiază `.env.example` în `.env` și completează `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` și `DISCORD_ADMIN_IDS` cu ID-ul Discord al administratorului (mai mulți administratori se separă prin virgulă).
 2. În Discord Developer Portal, configurează URL-ul de redirect OAuth2 exact ca `DISCORD_REDIRECT_URI` (implicit `http://localhost:3000/auth/discord/callback`) și activează scope-ul `identify`.

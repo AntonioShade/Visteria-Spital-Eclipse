@@ -297,7 +297,6 @@ async function serveStatic(response, pathname) {
   response.end(await readFile(filePath));
 }
 
-await mkdir(dataDirectory, { recursive: true });
 export async function handler(request, response) {
   response.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://cdn.discordapp.com; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
   response.setHeader("Referrer-Policy", "no-referrer");
@@ -306,6 +305,12 @@ export async function handler(request, response) {
     const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
     if (url.pathname.startsWith("/api/auth/")) {
       url.pathname = url.pathname.slice("/api".length);
+    }
+    if (process.env.VERCEL && !process.env.DATABASE_URL
+      && (url.pathname.startsWith("/api/") || url.pathname.startsWith("/auth/"))) {
+      return sendJson(response, 503, {
+        error: "Baza de date Neon nu este configurată. Adaugă DATABASE_URL în Environment Variables pe Vercel și redeployează."
+      });
     }
     if (url.pathname.startsWith("/api/")) return await handleApi(request, response, url);
     if (url.pathname.startsWith("/auth/")) return await handleOAuth(request, response, url);
